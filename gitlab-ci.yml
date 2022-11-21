@@ -1,0 +1,50 @@
+workflow:
+     rules: 
+       - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+
+
+stages:
+    - test
+    - build
+    - deploy
+run_unit_test:
+    stage: test
+    before_scipt:
+      - echo "perparing test data....." 
+    script:
+      - echo "running tests...."
+    after_script:
+      - echo "cleaning up temporary files..."
+
+run_lint_test:
+    stage: test
+    before_scipt:
+      - echo "perparing test data....." 
+    script:
+      - echo "running tests...."
+    after_script:
+      - echo "cleaning up temporary files..."
+
+build_image:
+    only:
+      - main
+    stage: build
+    script:
+      - echo "building the docker image...."
+      - echo "tagging the docker image...."
+
+push_image:
+    only:
+      - main
+    stage: build
+    needs: 
+      - build_image
+    script:
+      - echo "logging intoo docker registory...."
+      - echo "pushing docker image to repository...."
+
+deploy_image:
+    only:
+      - main
+    stage: deploy
+      - echo "deplying new docker image to dev server " 
