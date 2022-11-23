@@ -1,13 +1,17 @@
 workflow:
      rules: 
        - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
-
-
+           when: never
+       - when: always
 stages:
     - test
     - build
     - deploy
 run_unit_test:
+    tags:
+     - ec2
+     - aws
+     - remote
     stage: test
     before_scipt:
       - echo "perparing test data....." 
@@ -17,6 +21,10 @@ run_unit_test:
       - echo "cleaning up temporary files..."
 
 run_lint_test:
+    tags:
+     - ec2
+     - aws
+     - remote
     stage: test
     before_scipt:
       - echo "perparing test data....." 
@@ -26,6 +34,10 @@ run_lint_test:
       - echo "cleaning up temporary files..."
 
 build_image:
+    tags:
+     - ec2
+     - aws
+     - remote
     only:
       - main
     stage: build
@@ -34,6 +46,10 @@ build_image:
       - echo "tagging the docker image...."
 
 push_image:
+    tags:
+     - ec2
+     - aws
+     - remote
     only:
       - main
     stage: build
@@ -44,6 +60,10 @@ push_image:
       - echo "pushing docker image to repository...."
 
 deploy_image:
+    tags:
+     - ec2
+     - aws
+     - remote
     only:
       - main
     stage: deploy
