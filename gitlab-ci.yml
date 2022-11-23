@@ -1,3 +1,10 @@
+image: alpine:3.15.1
+
+variables:
+  image_repository: docker.io/hafidousbaa/myapp
+  image_tag:  v1.0
+
+
 workflow:
      rules: 
        - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
